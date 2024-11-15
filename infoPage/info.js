@@ -211,7 +211,7 @@ epOfCharacters.addEventListener('click',()=>{
 })
 
 document.querySelector('.title').addEventListener('click',()=>{
-    window.location.pathname = "/index.html";
+    window.location.pathname = "/BIT_Show/";
 })
 
 window.addEventListener('load',()=>{
