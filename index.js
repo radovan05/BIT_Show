@@ -16,9 +16,7 @@ function makeCards(data){
     // });
 }
 function defineCard(show){
-    const cards = document.querySelectorAll('.wrapper > div');
-    if(cards.length<=50)
-    {
+   
     const div= document.createElement('div');
     const img= document.createElement('img');
     const p= document.createElement('p');
@@ -31,13 +29,14 @@ function defineCard(show){
     div.addEventListener('click',()=>{
         // window.localStorage.removeItem('showInfo')
         window.localStorage.setItem('showInfo',JSON.stringify(show));
-        window.location.pathname = "infoPage/info.html";
+        window.location.pathname = "/infoPage/info.html";
     })
-    }
+    
     
 
 }
 function getOptions(string){ 
+    
     const SEARCH_API=`https://api.tvmaze.com/search/shows?q=${string}`
     fetch(SEARCH_API).then(res => res.json()).then(data => makeOptions(data)).catch(er => console.log(er))
 }
@@ -61,26 +60,36 @@ function defineOptions(show){
         // console.log(show)
         // window.localStorage.removeItem('showInfo')
         window.localStorage.setItem('showInfo',JSON.stringify(show.show));
-         window.location.pathname = "infoPage/info.html";
+         window.location.pathname = "/infoPage/info.html";
     })
     
 }
 
-
+function debounce(timeout = 300){
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { getOptions(search.value); }, timeout);
+    };
+  }
 const search = document.querySelector('.search');
 
 search.addEventListener('focus',()=>{
-    document.addEventListener('keyup',()=>{
-        getOptions(search.value);
+    document.addEventListener('keyup',
+
+        debounce(400)
        
-    })
+    )
 })
 
-// search.addEventListener('focusout',()=>{
-//     const box= document.querySelector('.result');
-//     box.innerHTML='';
-//     search.value='';
-// })
+search.addEventListener('focusout',()=>{
+    setTimeout(()=>{
+       const box= document.querySelector('.result');
+    box.innerHTML='';
+    search.value='';  
+    },500)
+   
+})
 
 
 

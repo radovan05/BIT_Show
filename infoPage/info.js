@@ -1,6 +1,13 @@
+let id; 
+let characterList=[];
+let akaList=[];
+let epList=[]; 
 function getData(show){
+// if(show) {
+// }
+
     if(show?.name){const name =document.querySelector('.name');
-    name.textContent = show.name;}
+    name.textContent = show.name ?? 'N/A';}
     if(show?.image?.original){
         const img= document.querySelector('img');
     img.src = show.image.original;
@@ -36,26 +43,33 @@ function getData(show){
     {const summary =document.querySelector('.summary');
     summary.innerHTML = `${show.summary}`;}
 }
-let id; 
+
 //character list
 const box =document.querySelector('.list-char');
 function makeCharacter(data){
     data.forEach(el => {
-         const div = document.createElement('div');
-         const img = document.createElement('img');
-         const name= document.createElement('p');
-         const date= document.createElement('p');
-         const living= document.createElement('p');
-         const div2 = document.createElement('div');
-         img.src= el.person.image.medium;
-         name.textContent= `${el.person.name}/${el.character.name}`
-         date.textContent=`Born: ${el.person.birthday}`
-         living.textContent= `From: ${el.person.country.name}`
-         div2.append(name,date,living);
-         div.append(img,div2)
-         box.append(div);
+         characterList[characterList.length]=el;
 
     });
+  
+}
+function defineCharacters(){
+    characterList.forEach(el => {
+        const div = document.createElement('div');
+        const img = document.createElement('img');
+        const name= document.createElement('p');
+        const date= document.createElement('p');
+        const living= document.createElement('p');
+        const div2 = document.createElement('div');
+        img.src= el.person.image.medium;
+        name.textContent= `${el.person.name}/${el.character.name}`
+        date.textContent=`Born: ${el.person.birthday}`
+        living.textContent= `From: ${el.person.country.name}`
+        div2.append(name,date,living);
+        div.append(img,div2)
+        box.append(div);
+
+   });
 }
 function getOptions(string){ 
     const SEARCH_API=`https://api.tvmaze.com/search/shows?q=${string}`
@@ -86,14 +100,21 @@ function defineOptions(show){
     
 }
 
-
+function debounce(timeout = 300){
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => { getOptions(search.value); }, timeout);
+    };
+  }
 const search = document.querySelector('.search');
 
 search.addEventListener('focus',()=>{
-    document.addEventListener('keyup',()=>{
-        getOptions(search.value);
-       
-    })
+    document.addEventListener('keyup',
+
+    debounce(400)
+   
+)
 })
 
 function getCharacters(){
@@ -112,7 +133,7 @@ listOfCharacters.addEventListener('click',()=>{
         textInListOfCharacters.textContent='~Cast list >';
     }else { 
         textInListOfCharacters.textContent='~Cast list v';
-       getCharacters(); 
+        defineCharacters(); 
     }
     
 })
@@ -122,22 +143,27 @@ listOfCharacters.addEventListener('click',()=>{
 
 const box1 =document.querySelector('.lsit-akas');
 function makeAka(data){
-    data.forEach(el => {
-         const div = document.createElement('div');
-      
-         const name= document.createElement('p');
-      
-         const living= document.createElement('p');
-      
-        
-         name.textContent= `Name: ${el.name}`
+    data.forEach((el)=>{
+        akaList[akaList.length]=el;
+    })
+}
+function defineAka(){
+    akaList.forEach(el => {
+        const div = document.createElement('div');
+     
+        const name= document.createElement('p');
+     
+        const living= document.createElement('p');
+     
        
-         living.textContent= `From: ${el.country.name}`
-        
-         div.append(name,living)
-         box1.append(div);
+        name.textContent= `Name: ${el.name}`
+      
+        living.textContent= `From: ${el.country.name}`
+       
+        div.append(name,living)
+        box1.append(div);
 
-    });
+   });
 }
 
 function getAka(){
@@ -156,7 +182,7 @@ akaOfCharacters.addEventListener('click',()=>{
         textInAkaOfCharacters.textContent='~AKA\'s list >';
     }else { 
         textInAkaOfCharacters.textContent='~AKA\'s list v';
-        getAka(); 
+        defineAka(); 
     }
     
 })
@@ -166,7 +192,14 @@ akaOfCharacters.addEventListener('click',()=>{
 
 const box2 =document.querySelector('.list-ep');
 function makeEp(data){
+ 
     data.forEach(el => {
+        epList[epList.length]= el;
+
+    });
+}
+function defineEp(){
+    epList.forEach((el)=>{
         const div = document.createElement('div');
         const img = document.createElement('img');
         // const name= document.createElement('p');
@@ -185,8 +218,7 @@ function makeEp(data){
         div2.append(date,living);
         div.append(img,div2)
         box2.append(div);
-
-    });
+    })
 }
 
 function getEp(){
@@ -205,8 +237,8 @@ epOfCharacters.addEventListener('click',()=>{
         textInEpOfCharacters.textContent='~Episodes list >';
     }else { 
         textInEpOfCharacters.textContent='~Episodes list v';
-        getEp(); 
-    }
+        defineEp();
+        }
     
 })
 
@@ -217,6 +249,20 @@ document.querySelector('.title').addEventListener('click',()=>{
 window.addEventListener('load',()=>{
     let data = JSON.parse(window.localStorage.getItem('showInfo'));
     id = data.id;
+   
+    
     getData(data);
+    getEp();
+    getCharacters();
+    getAka();
 
+})
+
+search.addEventListener('focusout',()=>{
+    setTimeout(()=>{
+       const box= document.querySelector('.result');
+    box.innerHTML='';
+    search.value='';  
+    },500)
+   
 })
