@@ -29,7 +29,7 @@ function defineCard(show){
     div.addEventListener('click',()=>{
         // window.localStorage.removeItem('showInfo')
         window.localStorage.setItem('showInfo',JSON.stringify(show));
-        window.location.pathname = "/infoPage/info.html";
+        window.location.pathname = "/BIT_Show/infoPage/info.html";
     })
     
     
@@ -60,7 +60,7 @@ function defineOptions(show){
         // console.log(show)
         // window.localStorage.removeItem('showInfo')
         window.localStorage.setItem('showInfo',JSON.stringify(show.show));
-         window.location.pathname = "/infoPage/info.html";
+         window.location.pathname = "/BIT_Show/infoPage/info.html";
     })
     
 }
