@@ -13,7 +13,7 @@ function makeCards(data){
                 let pom = data[i];
                 data[i]=data[j]
                 data[j]=pom;
-                console.log(i,j)
+              
             }
         }
     }
