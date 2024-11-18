@@ -95,11 +95,12 @@ function defineOptions(show){
         // console.log(show)
         // window.localStorage.removeItem('showInfo')
         window.localStorage.setItem('showInfo',JSON.stringify(show.show));
-        if(window.location.pathname === '/BIT_Show/infoPage/info.html'  || window.location.pathname === '/infoPage/info.html'){
-            window.location.pathname = "./infoPage/info.html";
+        if(window.location.pathname === '/BIT_Show/infoPage/info.html' ){
+           
+            window.location.pathname = '/BIT_Show/infoPage/info.html'
         }
         else{ 
-            window.location.pathname = '/BIT_Show/infoPage/info.html'
+            window.location.pathname = "./infoPage/info.html";
         }
     })
     
@@ -248,7 +249,13 @@ epOfCharacters.addEventListener('click',()=>{
 })
 
 document.querySelector('.title').addEventListener('click',()=>{
-    window.location.pathname = "../";
+    if(window.location.pathname==='/BIT_Show/infoPage/info.html')
+    {
+        window.location.pathname= '/BIT_Show/';
+    }else{
+        window.location.pathname = "../";
+    }
+    
 })
 
 window.addEventListener('load',()=>{
