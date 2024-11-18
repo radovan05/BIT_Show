@@ -7,6 +7,16 @@ function getShows(){
     fetch(ALL_SHOWS_TV_MAZE_API).then(res => res.json()).then(data => makeCards(data)).catch(er => console.log(er))
 }
 function makeCards(data){
+    for(let i=0; i < data.length; i++){
+        for(let j =i ; j < data.length; j++){ 
+            if(data[i].rating.average < data[j].rating.average){
+                let pom = data[i];
+                data[i]=data[j]
+                data[j]=pom;
+                console.log(i,j)
+            }
+        }
+    }
     for(let  i= 0; i <50 ;i++){
         defineCard(data[i])
     }

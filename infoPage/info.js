@@ -116,11 +116,7 @@ function debounce(timeout = 300){
 const search = document.querySelector('.search');
 
 search.addEventListener('focus',()=>{
-    document.addEventListener('keyup',
-
-    debounce(400)
-   
-)
+    document.addEventListener('keyup',debounce(400))
 })
 
 function getCharacters(){
